@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { APIWeatherService } from '../services/api-weather.service';
+import { Geolocation } from '@capacitor/geolocation';
+
+
 
 @Component({
   selector: 'app-tab1',
@@ -7,6 +11,10 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
 
-  constructor() {}
+  constructor(
+    public climaService:APIWeatherService
+  ) {
+    climaService.busquedaPorGeolocalizacion()
+  }
 
 }
