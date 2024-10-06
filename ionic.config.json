@@ -1,0 +1,7 @@
+{
+  "name": "proyecto_pronostico",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
