@@ -14,7 +14,8 @@ export class Tab1Page {
   constructor(
     public climaService:APIWeatherService
   ) {
-    climaService.busquedaPorGeolocalizacion()
+     
+     
   }
 
 }
