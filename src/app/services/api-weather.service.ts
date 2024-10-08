@@ -10,11 +10,12 @@ export class APIWeatherService {
 
   private API_KEY = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
 
-  public datosCiudad: any[] = [];
+  public datosCiudad = {"LocalizedName":""};
   public coordenadas = {"latitude":0, "longitude":0}
   public idCiudad:string=""
   public climaActualEnCiudad = {isDayTime:"",temperatura:{}, descripcion:""}
   public proximasDoceHoras = []
+  public proximasCincoHoras = []
   constructor() { }
 
   //Coordenandas
@@ -60,10 +61,16 @@ export class APIWeatherService {
   }
 
   async climaProximasDoceHoras(idCiudad : string = "1228466"){
-    await axios.get("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric="+"true").
+    await axios.get("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true").
     then(res => {
       this.proximasDoceHoras = res.data
-      
+    })
+  }
+
+  async climaProximosCincoDias(idCiudad : string = "1228466"){
+    await axios.get("http://dataservice.accuweather.com/forecasts/v1/daily/5day/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
+    .then(res => {
+      this.proximasCincoHoras = res.data.DailyForecasts
     })
   }
 
