@@ -32,7 +32,9 @@
     </ion-item>
 
     <ion-button expand="full" type="submit" [disabled]="!loginForm.valid">Iniciar sesión</ion-button>
+    
   </form>
+  <ion-button expand="full" (click)="loginWithGoogle()">Iniciar sesion con Google</ion-button>
 
   
 </ion-content>
