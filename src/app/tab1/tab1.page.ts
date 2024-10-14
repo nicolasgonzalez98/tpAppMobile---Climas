@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { APIWeatherService } from '../services/api-weather.service';
+
 import { Geolocation } from '@capacitor/geolocation';
+import { APIWeatherService } from '../common/services/api-weather.service';
 
 
 
