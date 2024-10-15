@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { User } from '../common/models/users.models';
+import { User } from '../common/models/user.model';
 import { FirestoreService } from '../common/services/firestore.service';
 import { Auth, getAuth, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

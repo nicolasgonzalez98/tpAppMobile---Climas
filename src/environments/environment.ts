@@ -5,13 +5,13 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyAO5KVzg5kmXx68yEe8qTh1Gaj5emKB668",
-    authDomain: "proyectosclimas-6bb0f.firebaseapp.com",
-    projectId: "proyectosclimas-6bb0f",
-    storageBucket: "proyectosclimas-6bb0f.appspot.com",
-    messagingSenderId: "547418119225",
-    appId: "1:547418119225:web:62eceb83ed53b78a6c01e8",
-    measurementId: "G-DWVN8NB54C"
+    apiKey: "AIzaSyDSAHlcbU-42JtKq_MDTBY9EtZD47oLdec",
+    authDomain: "climas-app.firebaseapp.com",
+    projectId: "climas-app",
+    storageBucket: "climas-app.appspot.com",
+    messagingSenderId: "364451586110",
+    appId: "1:364451586110:web:e32bc2314cbb635066716f",
+    measurementId: "G-RFXKDKKZB9"
   }
 };
 
