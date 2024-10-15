@@ -10,6 +10,6 @@ export class AppComponent {
   constructor(
     private navCtrl: NavController
   ) {
-    this.navCtrl.navigateForward('/login');
+    // this.navCtrl.navigateForward('/register');
   }
 }
