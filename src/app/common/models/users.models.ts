@@ -1,4 +1,4 @@
 export interface User{
-    nombre: string;
-    edad: number;
+    correo:string,
+    password:string
 }

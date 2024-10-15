@@ -13,6 +13,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { environment } from 'src/environments/environment';
 import { ReactiveFormsModule } from '@angular/forms';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
 
 
 @NgModule({
@@ -25,7 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ScreenTrackingService, 
     UserTrackingService, 
     provideFirestore(() => getFirestore()), 
-    provideStorage(() => getStorage())],
+    provideStorage(() => getStorage()), provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), provideDatabase(() => getDatabase())],
   bootstrap: [AppComponent],
 })
 export class  AppModule {}

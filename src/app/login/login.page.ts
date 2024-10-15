@@ -33,6 +33,7 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.firestoreService.isSigned());
   }
 
   loadUsers(){
@@ -69,11 +70,7 @@ export class LoginPage implements OnInit {
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
-          console.log('Token de Google:', token);
-          console.log('Usuario logueado:', user);
-          // IdP data available using getAdditionalUserInfo(result)
-          // ...
-          console.log("Inicio bien")
+          this.navCtrl.navigateForward('/tabs/tab1');
         }
         
       }).catch((error) => {
