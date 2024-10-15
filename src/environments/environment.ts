@@ -11,7 +11,7 @@ export const environment = {
     storageBucket: "climas-app.appspot.com",
     messagingSenderId: "364451586110",
     appId: "1:364451586110:web:e32bc2314cbb635066716f",
-    measurementId: "G-RFXKDKKZB9"
+    measurementId: "G-RFXKDKKZB9"
   }
 };
 
