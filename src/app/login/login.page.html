@@ -39,4 +39,10 @@
   <ion-button expand="full" class="ion-padding" color="light" [routerLink]="['/register']">Registrarse</ion-button>
 
   
+  <ion-toast
+    [isOpen]="isToastOpen"
+    message="Usuario o contraseña invalido."
+    [duration]="5000"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
 </ion-content>
