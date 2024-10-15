@@ -3,8 +3,19 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: "AIzaSyDSAHlcbU-42JtKq_MDTBY9EtZD47oLdec",
+    authDomain: "climas-app.firebaseapp.com",
+    projectId: "climas-app",
+    storageBucket: "climas-app.appspot.com",
+    messagingSenderId: "364451586110",
+    appId: "1:364451586110:web:e32bc2314cbb635066716f",
+    measurementId: "G-RFXKDKKZB9"
+  }
 };
+
+
 
 /*
  * For easier debugging in development mode, you can import the following file
