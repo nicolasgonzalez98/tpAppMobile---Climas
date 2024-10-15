@@ -20,6 +20,7 @@ export class LoginPage implements OnInit {
   
   users: User[] = [];
   loginForm: FormGroup;
+  isToastOpen:boolean = false;
   
 
   constructor(
@@ -56,8 +57,12 @@ export class LoginPage implements OnInit {
       // Redirigir al usuario a la página principal o donde quieras
       this.navCtrl.navigateForward('/tabs/tab1');
     } catch (error) {
-      console.error('Error al iniciar sesión:', error);
+      this.setOpen(true)
     }
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isToastOpen = isOpen;
   }
 
   async loginWithGoogle(){

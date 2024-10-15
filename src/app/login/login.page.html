@@ -36,5 +36,10 @@
   </form>
   <ion-button expand="full" (click)="loginWithGoogle()">Iniciar sesion con Google</ion-button>
 
-  
+  <ion-toast
+    [isOpen]="isToastOpen"
+    message="Usuario o contraseña invalido."
+    [duration]="5000"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
 </ion-content>
