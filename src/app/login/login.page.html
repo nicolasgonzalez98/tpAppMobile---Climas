@@ -56,30 +56,16 @@
             </ion-card>
           </ion-item>
         </ion-list>
+        <ion-toast
+          [isOpen]="isToastOpen"
+          message="Usuario o contraseña invalido."
+          [duration]="5000"
+          (didDismiss)="setOpen(false)"
+        ></ion-toast>
       </form>
     </div>
   </ion-content>
 
-<<<<<<< HEAD
-=======
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input formControlName="password" type="password"></ion-input>
-    </ion-item>
-
-    <ion-button expand="full" type="submit" [disabled]="!loginForm.valid">Iniciar sesión</ion-button>
-    
-  </form>
-  <ion-button expand="full" (click)="loginWithGoogle()">Iniciar sesion con Google</ion-button>
-
-  <ion-button expand="full" class="ion-padding" color="light" [routerLink]="['/register']">Registrarse</ion-button>
-
+ 
   
-  <ion-toast
-    [isOpen]="isToastOpen"
-    message="Usuario o contraseña invalido."
-    [duration]="5000"
-    (didDismiss)="setOpen(false)"
-  ></ion-toast>
-</ion-content>
->>>>>>> ed06b4c1de152d930c58dc1d5c27d9d0889a8441
+
