@@ -56,13 +56,12 @@
             </ion-card>
           </ion-item>
         </ion-list>
+        <ion-toast
+          [isOpen]="isToastOpen"
+          message="Usuario o contraseña invalido."
+          [duration]="5000"
+          (didDismiss)="setOpen(false)"
+        ></ion-toast>
       </form>
     </div>
   </ion-content>
-
-
-  <ion-button expand="full" class="ion-padding" color="light" [routerLink]="['/register']">Registrarse</ion-button>
-
-  
-</ion-content>
-
