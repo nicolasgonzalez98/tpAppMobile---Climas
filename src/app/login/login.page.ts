@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { User } from '../common/models/users.models';
+import { User } from '../common/models/user.model';
 import { FirestoreService } from '../common/services/firestore.service';
-import { Auth, getAuth, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { signOut } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { browserLocalPersistence, getAuth, GoogleAuthProvider, setPersistence, signInWithPopup, signInWithEmailAndPassword, browserSessionPersistence } from "firebase/auth";
+
 
 
 
@@ -19,6 +20,7 @@ export class LoginPage implements OnInit {
   
   users: User[] = [];
   loginForm: FormGroup;
+  isToastOpen:boolean = false;
   
 
   constructor(
@@ -30,9 +32,11 @@ export class LoginPage implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+    
   }
 
   ngOnInit() {
+    
   }
 
   loadUsers(){
@@ -45,17 +49,20 @@ export class LoginPage implements OnInit {
 
   async login() {
     const { email, password } = this.loginForm.value;
+    
+    const auth = getAuth();
     try {
-      const auth = getAuth();
-      const user = await signInWithEmailAndPassword(auth,email,password).then((user) =>{
-        console.log('Login exitoso!', user.user);
-      });
-      
+      await setPersistence(auth, browserLocalPersistence)
+      .then(() => signInWithEmailAndPassword(auth, email, password))
       // Redirigir al usuario a la página principal o donde quieras
       this.navCtrl.navigateForward('/tabs/tab1');
     } catch (error) {
-      console.error('Error al iniciar sesión:', error);
+      this.setOpen(true)
     }
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isToastOpen = isOpen;
   }
 
   async loginWithGoogle(){
@@ -69,11 +76,7 @@ export class LoginPage implements OnInit {
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
-          console.log('Token de Google:', token);
-          console.log('Usuario logueado:', user);
-          // IdP data available using getAdditionalUserInfo(result)
-          // ...
-          console.log("Inicio bien")
+          this.navCtrl.navigateForward('/tabs/tab1');
         }
         
       }).catch((error) => {
