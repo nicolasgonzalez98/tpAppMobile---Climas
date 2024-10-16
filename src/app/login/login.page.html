@@ -56,7 +56,19 @@
             </ion-card>
           </ion-item>
         </ion-list>
+        <ion-toast
+          [isOpen]="isToastOpen"
+          message="Usuario o contraseña invalido."
+          [duration]="5000"
+          (didDismiss)="setOpen(false)"
+        ></ion-toast>
       </form>
     </div>
   </ion-content>
 
+<<<<<<< HEAD
+=======
+ 
+  
+
+>>>>>>> 809983735e706076ad90d1ddc211b7398f81fc0e
