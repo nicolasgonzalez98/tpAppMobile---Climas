@@ -20,7 +20,7 @@
                 <ion-card-title>Iniciar sesión</ion-card-title>
                 <ion-list>
                   <ion-item>
-                    <ion-input labelPlacement="floating">
+                    <ion-input formControlName="email" labelPlacement="floating">
                       <ion-icon
                         slot="start"
                         name="person-outline"
@@ -33,7 +33,7 @@
 
                 <ion-list>
                   <ion-item>
-                    <ion-input labelPlacement="floating">
+                    <ion-input type="password" formControlName="password" labelPlacement="floating">
                       <ion-icon
                         slot="start"
                         name="lock-closed-outline"
@@ -46,11 +46,11 @@
                   <ion-button type="submit" [disabled]="!loginForm.valid"
                     >Iniciar sesión</ion-button
                   >
-                  <ion-button (click)="loginWithGoogle()"
+                  <ion-button (click)="this.firestoreService.loginWithGoogle()"
                     >Iniciar sesion con Google</ion-button
                   >
                   <p>¿No tienes ninguna cuenta?</p>
-                  <a href="">Registrarte</a>
+                  <a href="/register">Registrarte</a>
                 </ion-list>
               </ion-card-header>
             </ion-card>
