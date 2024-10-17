@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { APIWeatherService } from '../common/services/api-weather.service';
 
 
 @Component({
@@ -9,12 +10,26 @@ import { Router } from '@angular/router';
 })
 export class DetallesPage implements OnInit {
 
+  idCiudad!: string ;
+  datosCiudad:object={}
+  proximosCincoDias:any[] = []
+  proximasDoceHoras:any[] = []
+  
   constructor(
-    private roter: Router
+    public datosClima:APIWeatherService,
+    private route:ActivatedRoute
+  ) { 
+    
+  } 
 
-  ) { }
-
-  ngOnInit() {
+  async ngOnInit() {
+    this.idCiudad = this.route.snapshot.paramMap.get('idUbicacion') || "";
+    
+    await this.datosClima.climaEnCiudad(this.idCiudad)
+    
+    this.proximosCincoDias= await this.datosClima.climaProximosCincoDias(this.idCiudad)
+    console.log(this.proximosCincoDias)
+    console.log(this.datosClima)
   }
 
 }

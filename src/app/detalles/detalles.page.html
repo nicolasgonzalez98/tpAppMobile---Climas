@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>detalles</ion-title>
+    <ion-title>{{ this.datosClima.datosCiudad.LocalizedName }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,4 +10,22 @@
       <ion-title size="large">detalles</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Card Title</ion-card-title>
+      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      Here's a small text description for the card content. Nothing more, nothing less.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-item *ngFor="let item of proximosCincoDias; let index = index">
+      
+      <ion-label>{{ index }}</ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
