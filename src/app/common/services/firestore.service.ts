@@ -17,11 +17,5 @@ export class FirestoreService {
     return collectionData(itemCollection) as Observable<tipo[]>
   }
 
-  isSigned(){
-    const auth = getAuth();
-    var isSigned;
-    let user = auth.currentUser
-
-    return isSigned;
-  }
+  
 }
