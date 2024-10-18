@@ -55,6 +55,7 @@ export class APIWeatherService {
   async climaEnCiudad(idCiudad : string){
     await axios.get("http://dataservice.accuweather.com/currentconditions/v1/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES")
     .then(res => {
+      console.log(res.data[0])
       this.climaActualEnCiudad.isDayTime = res.data[0].IsDayTime
       this.climaActualEnCiudad.descripcion = res.data[0].WeatherText
       this.climaActualEnCiudad.temperatura = res.data[0].Temperature.Metric.Value
