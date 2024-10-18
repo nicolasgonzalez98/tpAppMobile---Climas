@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { Geolocation } from '@capacitor/geolocation';
 import { APIWeatherService } from '../common/services/api-weather.service';
+import { FirestoreService } from '../common/services/firestore.service';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 
@@ -13,7 +15,8 @@ import { APIWeatherService } from '../common/services/api-weather.service';
 export class Tab1Page {
 
   constructor(
-    public climaService:APIWeatherService
+    public climaService:APIWeatherService,
+    private firestoreService:FirestoreService
   ) {
     climaService.busquedaPorGeolocalizacion().then(() => {
       climaService.climaEnCiudad(climaService.idCiudad)
@@ -24,5 +27,6 @@ export class Tab1Page {
     
      
   }
+
 
 }

@@ -1,42 +1,81 @@
-<ion-header [translucent]="true">
+<ion-header collapse="condense">
   <ion-toolbar>
-    <ion-title>Log In</ion-title>
+    <ion-icon></ion-icon>
+    <ion-title size="large">login</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <!-- <ion-list>
+ <ion-content [fullscreen]="true">
+    <!-- <ion-list>
     @for (item of users; track $index) {
       <ion-item>
         <ion-label>Nombre: {{item.nombre}}</ion-label>
       </ion-item>
-    }
-    
+    }   
   </ion-list> -->
+    <div class="fondo-login">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <ion-list>
+          <ion-item>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title style="text-align: center;"><b>¡Bienvenidos a App de Climas!</b></ion-card-title>
+                <ion-card-title class="texto-login">Inicie sesión en su cuenta para acceder al pronostico actual</ion-card-title>
+                <ion-list>
+                  <ion-item>
+                    <ion-input labelPlacement="floating">
+                      <ion-icon
+                        slot="start"
+                        name="person-outline"
+                        aria-hidden="true"
+                      ></ion-icon>
+                      <div slot="label">Email</div>
+                    </ion-input>
+                  </ion-item>
+                </ion-list>
 
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <ion-item>
-      <ion-label position="floating">Email</ion-label>
-      <ion-input formControlName="email" type="email"></ion-input>
-    </ion-item>
+                <ion-list>
+                  <ion-item>
+                    <ion-input labelPlacement="floating">
+                      <ion-icon
+                        slot="start"
+                        name="lock-closed-outline"
+                      ></ion-icon>
+                      <div slot="label">Contraseña</div>
+                    </ion-input>
+                  </ion-item>
+                </ion-list>
+                <ion-list>
+                  <ion-button expand="block" type="submit" [disabled]="!loginForm.valid"
+                    >Iniciar sesión</ion-button
+                  >
+                 <!-- <ion-button (click)="loginWithGoogle()"
+                    >Iniciar sesion con </ion-button
+                  >-->
+             
+                       <ion-title class="login-google"> ó <br><br> Iniciar sesion con </ion-title>
 
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input formControlName="password" type="password"></ion-input>
-    </ion-item>
 
-    <ion-button expand="full" type="submit" [disabled]="!loginForm.valid">Iniciar sesión</ion-button>
-    
-  </form>
-  <ion-button expand="full" (click)="loginWithGoogle()">Iniciar sesion con Google</ion-button>
 
-  <ion-button expand="full" class="ion-padding" color="light" [routerLink]="['/register']">Registrarse</ion-button>
+                    <div class="button-container">                    
+                      <ion-button shape="round">
+                        <ion-icon name="logo-google"></ion-icon>                      
+                      </ion-button>
+                    </div>
+        
+                    <div style="text-align: center;"><p>¿No tienes ninguna cuenta? <a href="">Registrarte</a></p> </div>
 
-  
-</ion-content>
+
+                </ion-list>
+              </ion-card-header>
+            </ion-card>
+          </ion-item>
+        </ion-list>
+        <ion-toast
+          [isOpen]="isToastOpen"
+          message="Usuario o contraseña invalido."
+          [duration]="5000"
+          (didDismiss)="setOpen(false)"
+        ></ion-toast>
+      </form>
+    </div>
+  </ion-content>
