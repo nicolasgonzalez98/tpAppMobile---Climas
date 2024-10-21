@@ -8,14 +8,15 @@ import { Geolocation } from '@capacitor/geolocation';
 })
 export class APIWeatherService {
 
-  private API_KEY = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
+  private API_KEY2 = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
+  private API_KEY = "11h0AUOD4z9LBuz6r6A1upwiPIeqkUNF"
 
   public datosCiudad = {"LocalizedName":""};
   public coordenadas = {"latitude":0, "longitude":0}
   public idCiudad:string=""
   public climaActualEnCiudad = {isDayTime:"",temperatura:{}, descripcion:""}
   public proximasDoceHoras = []
-  public proximasCincoHoras = []
+  public proximosCincoDias = []
   constructor() { }
 
   //Coordenandas
@@ -51,27 +52,35 @@ export class APIWeatherService {
       
   }
 
-  async climaEnCiudad(idCiudad : string = "1228466"){
+  async climaEnCiudad(idCiudad : string){
     await axios.get("http://dataservice.accuweather.com/currentconditions/v1/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES")
     .then(res => {
+      console.log(res.data[0])
       this.climaActualEnCiudad.isDayTime = res.data[0].IsDayTime
       this.climaActualEnCiudad.descripcion = res.data[0].WeatherText
       this.climaActualEnCiudad.temperatura = res.data[0].Temperature.Metric.Value
     })
   }
 
-  async climaProximasDoceHoras(idCiudad : string = "1228466"){
-    await axios.get("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true").
-    then(res => {
-      this.proximasDoceHoras = res.data
-    })
+  async climaProximasDoceHoras(idCiudad : string ): Promise<any[]>{
+    const response = await axios.get("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
+    // .then(res => {
+    //   this.proximasDoceHoras = res.data
+    // })
+    this.proximasDoceHoras = response.data
+    return response.data
   }
 
-  async climaProximosCincoDias(idCiudad : string = "1228466"){
-    await axios.get("http://dataservice.accuweather.com/forecasts/v1/daily/5day/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
-    .then(res => {
-      this.proximasCincoHoras = res.data.DailyForecasts
-    })
+  async climaProximosCincoDias(idCiudad:string): Promise<any[]>{
+    try {
+      const response = await axios.get("http://dataservice.accuweather.com/forecasts/v1/daily/5day/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
+    
+      this.proximosCincoDias = response.data.DailyForecasts
+      return response.data.DailyForecasts
+    } catch (error) {
+      console.log(error)
+      return []
+    }
   }
 
 

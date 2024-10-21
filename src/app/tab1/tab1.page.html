@@ -13,7 +13,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card>
+  <ion-card (click)="verDetalle()">
     <ion-card-header>
       <ion-card-title>{{ this.climaService.climaActualEnCiudad.temperatura}} C°</ion-card-title>
       <ion-card-subtitle>{{ this.climaService.climaActualEnCiudad.descripcion}}</ion-card-subtitle>

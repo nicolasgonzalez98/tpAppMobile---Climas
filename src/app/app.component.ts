@@ -26,7 +26,7 @@ export class AppComponent {
       } else {
         console.log("No hay usuario autenticado.");
         // Redirigir a la página de login si es necesario
-        this.navCtrl.navigateRoot('/login');
+        // this.navCtrl.navigateRoot('/login');
       }
     });
   }
