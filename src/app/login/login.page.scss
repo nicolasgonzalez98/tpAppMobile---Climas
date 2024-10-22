@@ -22,3 +22,29 @@
     background-position: center;
     z-index: -1;
   }
+
+  .login-google{
+    text-align: center;
+    font-size: 14px;
+    padding: 10px 0px 10px 0px;
+    color: grey;
+  }
+
+  .inicio{
+    width: 100vh;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-bottom: 20px;
+  }
+
+  .texto-login{
+    text-align: center;
+    font-size: 14px;
+    padding: 10px 0px 10px 0px;
+    color: grey;
+  }

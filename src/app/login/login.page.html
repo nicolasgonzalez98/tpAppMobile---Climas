@@ -17,7 +17,8 @@
           <ion-item>
             <ion-card>
               <ion-card-header>
-                <ion-card-title>Iniciar sesión</ion-card-title>
+                <ion-card-title style="text-align: center;"><b>¡Bienvenidos a App de Climas!</b></ion-card-title>
+                <ion-card-title class="texto-login">Inicie sesión en su cuenta para acceder al pronostico actual</ion-card-title>
                 <ion-list>
                   <ion-item>
                     <ion-input formControlName="email" labelPlacement="floating">
@@ -43,14 +44,24 @@
                   </ion-item>
                 </ion-list>
                 <ion-list>
-                  <ion-button type="submit" [disabled]="!loginForm.valid"
+                  <ion-button expand="full" type="submit" [disabled]="!loginForm.valid"
                     >Iniciar sesión</ion-button
                   >
-                  <ion-button (click)="this.firestoreService.loginWithGoogle()"
+                <!--  <ion-button style="justify-content: center;" (click)="this.firestoreService.loginWithGoogle()"
                     >Iniciar sesion con Google</ion-button
-                  >
-                  <p>¿No tienes ninguna cuenta?</p>
-                  <a href="/register">Registrarte</a>
+                  >-->
+                  <ion-title class="login-google" 
+                  > ó <br><br> Iniciar sesion con </ion-title>
+
+                  <div class="button-container">                    
+                    <ion-button shape="round" (click)="this.firestoreService.loginWithGoogle()">
+                      <ion-icon name="logo-google" ></ion-icon>                      
+                    </ion-button>
+                  </div>
+      
+                  <div style="text-align: center;"><p>¿No tienes ninguna cuenta? <a href="/register">Registrarte</a></p> </div>
+
+
                 </ion-list>
               </ion-card-header>
             </ion-card>
