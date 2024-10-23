@@ -11,7 +11,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card>
+  <ion-card class="ion-padding ion-margin"> 
     <ion-card-header>
       <ion-card-title>Card Title</ion-card-title>
       <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
@@ -24,27 +24,43 @@
 
   <!-- PROXIMOS CINCO DIAS -->
   <ion-card class="ion-padding ion-margin">
-    <ion-card-header><ion-card-title>Proximos cinco dias</ion-card-title></ion-card-header>
-    <ion-card-title>
+    <ion-card-header>
+      <ion-card-title>Próximos cinco días</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
       <ion-item *ngFor="let item of proximosCincoDias; let index = index">
-        <ion-avatar slot="start">
-          <img [src]="'https://picsum.photos/80/80?random=' + index" alt="avatar" />
-        </ion-avatar>
-        <ion-col>
-          <h4>{{ this.formatearFecha(item.Date)}}</h4>
-          <p>Min: {{item.Temperature.Minimum.Value}} C° / Max: {{item.Temperature.Maximum.Value}} C°</p>
+        <!-- Columna para los iconos y descripciones del clima -->
+        <ion-col size="auto" class="ion-text-center">
+          <!-- Icono del día -->
+          <ion-icon [name]="item.iconoDia" size="large"></ion-icon>
+          
+          <!-- <p>Día</p> -->
+  
+          <!-- Icono de la noche -->
+          <!-- <ion-icon [name]="item.iconoNoche" size="large"></ion-icon>
+          
+          <p>Noche</p> -->
         </ion-col>
-        
+  
+        <!-- Columna para la información de la fecha y temperaturas -->
+        <ion-col>
+          <h4>{{ formatearFecha(item.Date) }}</h4>
+          <!-- <p>Día: {{item.Day.IconPhrase}}</p>
+          <p>Noche: {{item.Night.IconPhrase}}</p> -->
+          <p>Min: {{ item.Temperature.Minimum.Value }} C° / Max: {{ item.Temperature.Maximum.Value }} C°</p>
+        </ion-col>
       </ion-item>
-    </ion-card-title>
+    </ion-card-content>
   </ion-card>
+  
 
+  <!-- PROXIMAS DOCE HORAS -->
   <ion-card class="ion-padding ion-margin">
     <ion-card-header><ion-card-title>Proximas doce horas</ion-card-title></ion-card-header>
     <ion-card-title>
       <ion-item *ngFor="let item of proximasDoceHoras; let index = index">
         <ion-avatar slot="start">
-          <img [src]="'https://picsum.photos/80/80?random=' + index" alt="avatar" />
+          <ion-icon [name]="item.iconoClima" size="large"></ion-icon>
         </ion-avatar>
         <ion-col>
           <h4>{{ this.extraerHora(item.DateTime)}}</h4>
@@ -55,6 +71,10 @@
       </ion-item>
     </ion-card-title>
   </ion-card>
+
+  <!-- Prueba slider -->
+
+  
 
   
 </ion-content>

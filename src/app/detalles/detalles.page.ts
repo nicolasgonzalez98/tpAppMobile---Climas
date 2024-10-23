@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { APIWeatherService } from '../common/services/api-weather.service';
+import { addIcons } from 'ionicons';
+import { logoIonic } from 'ionicons/icons';
 
 
 @Component({
   selector: 'app-detalles',
   templateUrl: './detalles.page.html',
-  styleUrls: ['./detalles.page.scss'],
+  styleUrls: ['./detalles.page.scss']
 })
+
 export class DetallesPage implements OnInit {
 
   idCiudad!: string ;
@@ -15,11 +18,12 @@ export class DetallesPage implements OnInit {
   proximosCincoDias:any[] = []
   proximasDoceHoras:any[] = []
   
+  
   constructor(
     public datosClima:APIWeatherService,
     private route:ActivatedRoute
   ) { 
-    
+    addIcons({ logoIonic })
   } 
 
   async ngOnInit() {
@@ -29,9 +33,11 @@ export class DetallesPage implements OnInit {
     
     this.proximasDoceHoras = await this.datosClima.climaProximasDoceHoras(this.idCiudad);
     this.proximosCincoDias= await this.datosClima.climaProximosCincoDias(this.idCiudad);
-    console.log(this.proximasDoceHoras)
-    console.log(this.datosClima)
+    console.log(this.proximosCincoDias)
+    //console.log(this.datosClima)
   }
+
+  
 
   formatearFecha(fechaOriginal:string){
     const fecha = new Date(fechaOriginal);
