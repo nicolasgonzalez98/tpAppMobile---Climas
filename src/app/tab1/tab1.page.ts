@@ -24,9 +24,7 @@ export class Tab1Page {
     climaService.busquedaPorGeolocalizacion().then(() => {
       climaService.climaEnCiudad(climaService.idCiudad)
     })
-    .then(() => {
-      console.log(climaService.climaActualEnCiudad)
-    }) 
+     
   }
 
   verDetalle(){

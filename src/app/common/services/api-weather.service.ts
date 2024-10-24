@@ -11,7 +11,7 @@ export class APIWeatherService {
   private API_KEY2 = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
   private API_KEY = "11h0AUOD4z9LBuz6r6A1upwiPIeqkUNF"
 
-  public datosCiudad = {"LocalizedName":""};
+  public datosCiudad={"LocalizedName":""};
   public coordenadas = {"latitude":0, "longitude":0}
   public idCiudad:string=""
   public climaActualEnCiudad = {isDayTime:"",temperatura:{}, descripcion:""}
@@ -44,7 +44,8 @@ export class APIWeatherService {
       'Chubascos': "rainy",
       "Nubes y claros": "cloudy",
       "Mayormente nublado":"cloudy",
-      "Tormentas eléctricas":"thunderstorm"
+      "Tormentas eléctricas":"thunderstorm",
+      "Soleado":"sunny"
     };
 
     return climaArray.map(clima => {
@@ -86,34 +87,19 @@ export class APIWeatherService {
       // Retornar el clima sin cambios si no coincide con ninguno de los casos
       return clima;
     });
-  
-    // return climaArray.map(clima => {
-    //   let icono = iconMap[clima.IconPhrase] || 'help';  
-  
-    //   if (!clima.IsDaylight) {
-    //     if (clima.IconPhrase === 'Despejado' || clima.IconPhrase === 'Mayormente despejado') {
-    //       icono = 'moon';  
-    //     } else if (clima.IconPhrase === 'Nublado') {
-    //       icono = 'cloudy-night-outline';  
-    //     }
-        
-    //   }
-  
-    //   // Asignar el ícono de clima
-    //   return {
-    //     ...clima,
-    //     iconoClima: icono  // Nueva propiedad con el ícono correspondiente
-    //   };
-    // });
   }
 
   //Busquedas clima
   async buscarPorCiudad(query:string){
-    await axios.get("http://dataservice.accuweather.com/locations/v1/cities/search?apikey="+this.API_KEY+"&q="+query+"&language=es-ES")
+    
+    await axios.get("http://dataservice.accuweather.com/locations/v1/"+query+"?apikey="+this.API_KEY)
     .then((res) => {
+      console.log(res.data)
       this.datosCiudad= res.data
       this.idCiudad = res.data.Key
-    })  
+    })
+
+    
   }
 
   async busquedaPorGeolocalizacion(){
@@ -124,6 +110,7 @@ export class APIWeatherService {
       .then(res =>{
         this.idCiudad = res.data.Key
         this.datosCiudad= res.data
+        
       })
       
   }
@@ -140,9 +127,6 @@ export class APIWeatherService {
 
   async climaProximasDoceHoras(idCiudad : string ): Promise<any[]>{
     const response = await axios.get("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
-    // .then(res => {
-    //   this.proximasDoceHoras = res.data
-    // })
     this.proximasDoceHoras = response.data
     this.proximasDoceHoras = this.asignarIconoClima(this.proximasDoceHoras)
     
