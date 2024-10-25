@@ -48,6 +48,7 @@ export class RegisterPage implements OnInit {
   }
 
 
+
   formValidation(){
     if(!this.user.email){
       this.showToast("Ingrese un email");
