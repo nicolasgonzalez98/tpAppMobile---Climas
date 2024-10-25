@@ -8,16 +8,24 @@
             <ion-card-header>
               <ion-card-title style="text-align: center;"><b>¡Registrarse en App de Climas!</b></ion-card-title>
               <ion-card-title class="texto-login">Registrate para acceder al pronostico actual</ion-card-title>
-          
-          <ion-label position="floating" >Correo electronico</ion-label>
-          <ion-input type="email" [(ngModel)]="user.email" required></ion-input>
+          <ion-list>
+            <ion-item>
+             <ion-label position="floating" >Correo electronico</ion-label>
+             <ion-input type="email" [(ngModel)]="user.email" required></ion-input>
+            </ion-item>
+          </ion-list>
      
+          <ion-list>
+            <ion-item>
           <ion-label position="floating" >Contraseña</ion-label>
-          <ion-input type="password" [(ngModel)]="user.password" required></ion-input>
-           
+          <ion-input type="password" [(ngModel)]="user.password" required></ion-input>  
+        </ion-item>
+      </ion-list>   
           <ion-button class="ion-padding" color="primary" expand="full" (click)=register(user)>Registrarse</ion-button>
+           
 
             </ion-card-header>
+            
           </ion-card>
         </ion-item>
     </ion-list>
