@@ -5,6 +5,7 @@ import { APIWeatherService } from '../common/services/api-weather.service';
 import { FirestoreService } from '../common/services/firestore.service';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Router } from '@angular/router';
+import { UtilitiesService } from '../common/services/utilities.service';
 
 
 
@@ -15,15 +16,22 @@ import { Router } from '@angular/router';
 })
 export class Tab1Page {
 
+  
+
   constructor(
     public climaService:APIWeatherService,
     private firestoreService:FirestoreService,
     private roter: Router,
+    public utilities: UtilitiesService,
     
   ) {
     climaService.busquedaPorGeolocalizacion().then(() => {
       climaService.climaEnCiudad(climaService.idCiudad)
+      climaService.climaProximasDoceHoras(climaService.idCiudad)
+      climaService.climaProximosCincoDias(climaService.idCiudad)
     })
+
+    
      
   }
 
