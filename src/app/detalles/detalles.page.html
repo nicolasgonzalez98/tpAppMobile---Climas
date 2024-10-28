@@ -1,7 +1,9 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar  >
     <ion-title>{{ this.datosClima.datosCiudad.LocalizedName }}</ion-title>
+    <ion-icon (click)="addFavourite()" name="star-outline"></ion-icon>
   </ion-toolbar>
+  
 </ion-header>
 
 <ion-content [fullscreen]="true">

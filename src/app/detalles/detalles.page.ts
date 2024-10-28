@@ -41,4 +41,8 @@ export class DetallesPage implements OnInit {
     
     
   }
+
+  addFavourite(){
+    
+  }
 }

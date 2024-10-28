@@ -34,7 +34,7 @@ export class APIWeatherService {
     const iconMap: { [key: string]: string } = {
       'Despejado': 'sunny',             // Despejado (día)
       'Mayormente despejado': 'partly-sunny',
-      'Parcialmente nublado': 'partly-cloudy',
+      'Parcialmente nublado': 'cloudy',
       'Nublado': 'cloudy',              // Nublado
       'Lluvia': 'rainy',                // Lluvia
       'Tormentas': 'thunderstorm',      // Tormentas
@@ -45,7 +45,8 @@ export class APIWeatherService {
       "Nubes y claros": "cloudy",
       "Mayormente nublado":"cloudy",
       "Tormentas eléctricas":"thunderstorm",
-      "Soleado":"sunny"
+      "Soleado":"sunny",
+      "Mayormente soleado":"sunny"
     };
 
     return climaArray.map(clima => {

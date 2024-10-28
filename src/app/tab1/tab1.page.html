@@ -1,8 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Clima ahora
     </ion-title>
+
+    
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +15,9 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card (click)="verDetalle()">
+  <app-sign-out></app-sign-out>
+
+  <ion-card class="ion-padding ion-margin" (click)="verDetalle()">
     <ion-card-header>
       <ion-card-title>{{ this.climaService.climaActualEnCiudad.temperatura}} C°</ion-card-title>
       <ion-card-subtitle>{{ this.climaService.climaActualEnCiudad.descripcion}}</ion-card-subtitle>
@@ -67,6 +71,6 @@
     </ion-card-content>
   </ion-card>
 
-  <app-sign-out></app-sign-out>
+  
   
 </ion-content>

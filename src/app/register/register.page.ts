@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../common/models/user.model';
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
 import { AngularFireAuth } from "@angular/fire/compat/auth";
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +15,7 @@ export class RegisterPage implements OnInit {
 
   constructor(
     private toastCtrl: ToastController,
+    private firestore: AngularFirestore,
     private loadingCtrl: LoadingController,
     private afAuth: AngularFireAuth, 
     private navCtrl: NavController
@@ -32,11 +34,16 @@ export class RegisterPage implements OnInit {
 
       try{
         console.log("entro try")
-        await this.afAuth.createUserWithEmailAndPassword(user.email, user.password).then(data => { 
-          console.log(data),
+        const userCredential = await this.afAuth.createUserWithEmailAndPassword(user.email, user.password)
 
-          this.navCtrl.navigateForward('/login');
-        })
+        await this.firestore.collection('Usuarios').doc(userCredential.user?.uid).set({
+          id: userCredential.user?.uid,
+          email: user.email,
+          favoritos: [] // Array vacío
+        });
+
+        console.log("Usuario registrado y añadido a Firestore");
+        this.navCtrl.navigateForward('/login');
       } catch (e : any) {
         let errorMessage = e.message || e.getLocalizedMessage()
 
