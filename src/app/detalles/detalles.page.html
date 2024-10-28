@@ -1,7 +1,11 @@
 <ion-header [translucent]="true">
-  <ion-toolbar  >
-    <ion-title>{{ this.datosClima.datosCiudad.LocalizedName }}</ion-title>
-    <ion-icon (click)="addFavourite()" name="star-outline"></ion-icon>
+  <ion-toolbar >
+    <ion-title slot="start">{{ this.datosClima.datosCiudad.LocalizedName }}</ion-title>
+    <div slot="end" class="ion-padding">
+      <ion-icon *ngIf="!this.isFav && !this.isFavLoading" (click)="addFavourite()" name="star-outline"></ion-icon>
+      <ion-icon *ngIf="this.isFav && !this.isFavLoading" (click)="deleteFavourite()" name="star"></ion-icon>
+      <ion-icon *ngIf="this.isFavLoading" name="ellipsis-horizontal"></ion-icon>
+    </div>
   </ion-toolbar>
   
 </ion-header>

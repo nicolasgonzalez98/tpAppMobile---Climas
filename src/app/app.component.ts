@@ -16,6 +16,7 @@ export class AppComponent {
     private firestoreService:FirestoreService
   ) {
     this.firestoreService.checkAuthState()
+    
   }
 
 }

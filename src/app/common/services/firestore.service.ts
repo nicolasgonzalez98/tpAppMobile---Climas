@@ -1,11 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { collection, collectionData, Firestore, doc, updateDoc, arrayUnion, arrayRemove , getDoc } from '@angular/fire/firestore';
 import { NavController } from '@ionic/angular';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import { Auth, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,30 +14,38 @@ import { Router } from '@angular/router';
 export class FirestoreService {
 
   firestore: Firestore = inject(Firestore)
+  idUsuarioLogueado:string = ""
   
   constructor(
     private navCtrl: NavController,
     private firestoreD: AngularFirestore, // Inyecta Firestore
     private toastController: ToastController,
-    private router: Router
-  ) { }
+    private router: Router,
+    private auth:Auth
+  ) { 
+    
+  }
 
-  // getCollectionChanges<tipo>(path: string){
-  //   const itemCollection = collection(this.firestore,path)
-  //   return collectionData(itemCollection) as Observable<tipo[]>
-  // }
+  async idUserActual(){
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if(user){
+        this.idUsuarioLogueado = user?.uid
+      }
+    })
+  }
 
   checkAuthState() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if(this.router.url === "/login" || this.router.url === "/register" ){
         if(user){
-          console.log(user)
+          
           this.navCtrl.navigateForward('/tabs/tab1'); 
         }
       }else{
         if(!user){
-          console.log("No estoy autenticado")
+          
           this.navCtrl.navigateForward('/login');
         }
       }
@@ -89,5 +98,64 @@ export class FirestoreService {
     }
   }
 
+  async addFavourite(userId: string, ubicacionId: string){
+    const userDocRef = doc(this.firestore, `Usuarios/${userId}`);
+    try {
+      await updateDoc(userDocRef, {
+        favoritos: arrayUnion(ubicacionId)
+      });
+      console.log("Elemento agregado a favoritos");
+    } catch (error) {
+      console.error("Error al agregar a favoritos: ", error);
+    }
+  }
+
+  async deleteFavourite(userId:string, ubicacionId:string){
+    const userDocRef = doc(this.firestore, `Usuarios/${userId}`);
+
+    try {
+      await updateDoc(userDocRef, {
+        favoritos: arrayRemove(ubicacionId)
+      });
+      console.log("Elemento eliminado de favoritos");
+    } catch (error) {
+      console.error("Error al eliminar de favoritos: ", error);
+    }
+  }
+
+  async isFavourite(userId:string, idCiudad:string){
+    let user: User | null
+
+    try {
+
+      if(!userId){
+        user = this.auth.currentUser;
+
+        if (user) {
+          userId = user.uid;
+        }
+      }
+
+      const userDocRef = doc(this.firestore, `Usuarios/${userId || this.idUsuarioLogueado}`);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const favoritos = userData['favoritos'] || [];
+        const isFavorite = favoritos.includes(idCiudad);
+        
+        return isFavorite;
+      } else {
+        
+        return false;
+      }
+      
+    } catch (error) {
+      console.error("Error al verificar favoritos:", error);
+      return false;
+    }
+  }
+  }
+
   
-}
+
