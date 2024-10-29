@@ -26,14 +26,19 @@ export class FirestoreService {
     
   }
 
-  async idUserActual(){
+  async idUserActual(): Promise<string> {
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if(user){
-        this.idUsuarioLogueado = user?.uid
-      }
-    })
-  }
+    return new Promise((resolve, reject) => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          this.idUsuarioLogueado = user.uid;
+          resolve(user.uid);
+        } else {
+          reject("Usuario no autenticado");
+        }
+      });
+    });
+}
 
   checkAuthState() {
     const auth = getAuth();
@@ -84,7 +89,6 @@ export class FirestoreService {
           email: user.email,
           favoritos: [] // Array vacío
         });
-        console.log("Documento de usuario creado en Firestore");
       } else {
         console.log("El documento del usuario ya existe en Firestore");
       }
@@ -98,64 +102,84 @@ export class FirestoreService {
     }
   }
 
-  async addFavourite(userId: string, ubicacionId: string){
+  async addFavourite(userId: string, ciudad: { nombreCiudad: string, idCiudad: string }) {
     const userDocRef = doc(this.firestore, `Usuarios/${userId}`);
     try {
-      await updateDoc(userDocRef, {
-        favoritos: arrayUnion(ubicacionId)
-      });
-      console.log("Elemento agregado a favoritos");
+        await updateDoc(userDocRef, {
+            favoritos: arrayUnion(ciudad) // Guardar objeto en vez del id solo
+        });
+        this.showToast("Ubicación agregada a favoritos");
     } catch (error) {
-      console.error("Error al agregar a favoritos: ", error);
+      this.showToast("Error al agregar a favoritos: "+error);
     }
-  }
+}
 
-  async deleteFavourite(userId:string, ubicacionId:string){
+async deleteFavourite(userId: string, ciudad: { nombreCiudad: string, idCiudad: string }) {
     const userDocRef = doc(this.firestore, `Usuarios/${userId}`);
-
     try {
-      await updateDoc(userDocRef, {
-        favoritos: arrayRemove(ubicacionId)
-      });
-      console.log("Elemento eliminado de favoritos");
+        await updateDoc(userDocRef, {
+            favoritos: arrayRemove(ciudad) // Eliminar el objeto específico
+        });
+        this.showToast("Ubicación eliminada de favoritos");
     } catch (error) {
-      console.error("Error al eliminar de favoritos: ", error);
+      this.showToast("Error al eliminar de favoritos: "+error);
     }
-  }
+}
 
-  async isFavourite(userId:string, idCiudad:string){
-    let user: User | null
+  async isFavourite(userId: string, idCiudad: string): Promise<boolean> {
+    let user: User | null;
 
     try {
-
-      if(!userId){
-        user = this.auth.currentUser;
-
-        if (user) {
-          userId = user.uid;
+        if (!userId) {
+            user = this.auth.currentUser;
+            if (user) {
+                userId = user.uid;
+            }
         }
-      }
 
-      const userDocRef = doc(this.firestore, `Usuarios/${userId || this.idUsuarioLogueado}`);
+        const userDocRef = doc(this.firestore, `Usuarios/${userId || this.idUsuarioLogueado}`);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const favoritos = userData['favoritos'] || [];
+            // Buscar el idCiudad en el array de objetos
+            const isFavorite = favoritos.some((item: { idCiudad: string }) => item.idCiudad === idCiudad);
+
+            return isFavorite;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error("Error al verificar favoritos:", error);
+        return false;
+    }
+  }
+
+  async getFavourites(userId: string){
+    const userDocRef = doc(this.firestore, `Usuarios/${userId}`);
+    try {
       const userDoc = await getDoc(userDocRef);
-
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        const favoritos = userData['favoritos'] || [];
-        const isFavorite = favoritos.includes(idCiudad);
-        
-        return isFavorite;
+        return userData['favoritos'] || []; // Devuelve el array de favoritos o uno vacío si no existe
       } else {
-        
-        return false;
+        console.log("No se encontró el documento del usuario.");
+        return [];
       }
-      
     } catch (error) {
-      console.error("Error al verificar favoritos:", error);
-      return false;
+      console.error("Error al obtener favoritos: ", error);
+      return [];
     }
-  }
-  }
+    }
+}
+
+
+
+
+
+ 
+
 
   
 

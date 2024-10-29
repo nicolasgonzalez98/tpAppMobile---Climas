@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { Geolocation } from '@capacitor/geolocation';
 import { APIWeatherService } from '../common/services/api-weather.service';
 import { FirestoreService } from '../common/services/firestore.service';
@@ -16,7 +15,7 @@ import { UtilitiesService } from '../common/services/utilities.service';
 })
 export class Tab1Page {
 
-  
+  isloading:boolean = false
 
   constructor(
     public climaService:APIWeatherService,
@@ -25,14 +24,30 @@ export class Tab1Page {
     public utilities: UtilitiesService,
     
   ) {
-    climaService.busquedaPorGeolocalizacion().then(() => {
-      climaService.climaEnCiudad(climaService.idCiudad)
-      climaService.climaProximasDoceHoras(climaService.idCiudad)
-      climaService.climaProximosCincoDias(climaService.idCiudad)
-    })
+    
 
     
      
+  }
+
+  async ngOnInit(){
+    this.isloading = true
+
+    try {
+      
+      await this.climaService.busquedaPorGeolocalizacion();
+      
+      await Promise.all([
+        this.climaService.climaEnCiudad(this.climaService.idCiudad),
+        this.climaService.climaProximasDoceHoras(this.climaService.idCiudad),
+        this.climaService.climaProximosCincoDias(this.climaService.idCiudad),
+      ]);
+    } catch (error) {
+      console.error("Error al cargar los datos del clima:", error);
+    } finally {
+      
+      this.isloading = false;
+    }
   }
 
   verDetalle(){

@@ -7,6 +7,7 @@ import { ExploreContainerComponentModule } from '../explore-container/explore-co
 
 import { Tab1PageRoutingModule } from './tab1-routing.module';
 import { SignOutComponent } from "../components/sign-out/sign-out.component";
+import { LoaderSpinnerComponent } from "../components/loader-spinner/loader-spinner.component";
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { SignOutComponent } from "../components/sign-out/sign-out.component";
     FormsModule,
     ExploreContainerComponentModule,
     Tab1PageRoutingModule,
-    SignOutComponent
+    SignOutComponent,
+    LoaderSpinnerComponent
 ],
   declarations: [Tab1Page]
 })

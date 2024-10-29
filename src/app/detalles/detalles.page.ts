@@ -21,6 +21,7 @@ export class DetallesPage implements OnInit {
   proximasDoceHoras:any[] = []
   isFav:boolean = false
   isFavLoading:boolean = false
+  isloading:boolean = false
   
   
   constructor(
@@ -34,41 +35,54 @@ export class DetallesPage implements OnInit {
 
   async ngOnInit() {
     
+    this.isloading = true
     this.idCiudad = this.route.snapshot.paramMap.get('idUbicacion') || "";
     
-    
-    
-    await this.datosClima.climaEnCiudad(this.idCiudad)
-    await this.datosClima.buscarPorCiudad(this.idCiudad).then(() => {
-      this.datosCiudad = this.datosClima.datosCiudad
-    })
-    
-    this.proximasDoceHoras = await this.datosClima.climaProximasDoceHoras(this.idCiudad);
-    this.proximosCincoDias= await this.datosClima.climaProximosCincoDias(this.idCiudad);
-    
-    await this.firestoreService.idUserActual().then(() =>{
-      this.isFavourite()
-    })
+    try {
+      await Promise.all([
+        this.datosClima.climaEnCiudad(this.idCiudad),
+        this.datosClima.buscarPorCiudad(this.idCiudad).then(() => {
+          this.datosCiudad = this.datosClima.datosCiudad;
+        }),
+        this.datosClima.climaProximasDoceHoras(this.idCiudad).then(res => {
+          this.proximasDoceHoras = res;
+        }),
+        this.datosClima.climaProximosCincoDias(this.idCiudad).then(res => {
+          this.proximosCincoDias = res;
+        }),
+        this.firestoreService.idUserActual().then(() => {
+          this.isFavourite();
+        })
+      ]);
+    } catch (error) {
+      console.error("Error al obtener el usuario o datos del clima:", error);
+    } finally {
+      this.isloading = false;
+    }
     
   }
 
   async addFavourite(){
     this.isFavLoading = true
     const id = this.firestoreService.idUsuarioLogueado
+    const nombreCiudad = this.datosClima.datosCiudad.LocalizedName;
+    this.isFav = true
     
-    await this.firestoreService.addFavourite(id, this.idCiudad).then(() =>{
-      this.isFavourite()
-    }).then(() => {
-      this.isFavLoading = false
-    })
+    await this.firestoreService.addFavourite(id, { nombreCiudad, idCiudad: this.idCiudad }).then(() => {
+      this.isFavourite();
+  }).then(() => {
+      this.isFavLoading = false;
+  });
     
   }
 
   async deleteFavourite(){
     this.isFavLoading = true
-    const id = this.firestoreService.idUsuarioLogueado
+    const id = this.firestoreService.idUsuarioLogueado;
+    const nombreCiudad = this.datosClima.datosCiudad.LocalizedName;
+    this.isFav = false
     
-    await this.firestoreService.deleteFavourite(id, this.idCiudad).then(() =>{
+    await this.firestoreService.deleteFavourite(id, { nombreCiudad, idCiudad: this.idCiudad }).then(() =>{
       this.isFavourite()
     }).then(() => {
       this.isFavLoading = false
@@ -81,6 +95,4 @@ export class DetallesPage implements OnInit {
     const id = this.firestoreService.idUsuarioLogueado
     this.isFav= await this.firestoreService.isFavourite(id, this.idCiudad)
   }
-
-  
 }
