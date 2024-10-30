@@ -21,7 +21,7 @@ export class Tab2Page {
     const userId = this.firestoreService.idUsuarioLogueado;
     this.favorites = await this.firestoreService.getFavourites(userId);
 
-    console.log(this.favorites)
+    
     this.isLoading = false
   }
 

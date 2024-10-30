@@ -7,6 +7,12 @@ export class UtilitiesService {
 
   constructor() { }
 
+  /**
+ * Extrae la hora y los minutos de una fecha en formato de cadena.
+ * 
+ * @param {string} fechaOriginal - Fecha en formato de cadena que se va a procesar.
+ * @returns {string} - Hora formateada en formato "hh:mm".
+ */
   extraerHora(fechaOriginal: string) {
     const fecha = new Date(fechaOriginal);
   
@@ -20,6 +26,12 @@ export class UtilitiesService {
     return horaFormateada;
   }
 
+  /**
+ * Formatea una fecha en formato de cadena a una representación más legible.
+ * 
+ * @param {string} fechaOriginal - Fecha en formato de cadena que se va a procesar.
+ * @returns {string} - Fecha formateada en formato "Día dd/mm".
+ */
   formatearFecha(fechaOriginal:string){
     const fecha = new Date(fechaOriginal);
 

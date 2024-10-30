@@ -22,7 +22,16 @@
     <app-loader-spinner></app-loader-spinner>
   </div>
 
-  <ion-content *ngIf="!isloading">
+  <ion-content class="ion-padding ion-margin" *ngIf="error">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>No se encontró la ubicación solicitada.</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    
+  </ion-content>
+
+  <ion-content *ngIf="!isloading && !error">
     <ion-card class="ion-padding ion-margin"> 
       <ion-card-header>
         <ion-card-title>{{ this.datosClima.datosCiudad.LocalizedName }}</ion-card-title>

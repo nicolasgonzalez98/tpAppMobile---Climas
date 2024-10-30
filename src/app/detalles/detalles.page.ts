@@ -17,11 +17,12 @@ export class DetallesPage implements OnInit {
 
   idCiudad!: string ;
   datosCiudad:object={}
-  proximosCincoDias:any[] = []
+  proximosCincoDias:any[]= []
   proximasDoceHoras:any[] = []
   isFav:boolean = false
   isFavLoading:boolean = false
   isloading:boolean = false
+  error:boolean = false
   
   
   constructor(
@@ -54,14 +55,24 @@ export class DetallesPage implements OnInit {
           this.isFavourite();
         })
       ]);
+
+      
     } catch (error) {
-      console.error("Error al obtener el usuario o datos del clima:", error);
+      
+      this.error = true; 
+      this.datosCiudad = {};
+      this.datosClima.datosCiudad = {"LocalizedName":""}
     } finally {
       this.isloading = false;
     }
     
   }
 
+  /**
+ * Agrega la ciudad actual a la lista de favoritos del usuario.
+ * 
+ * @returns {Promise<void>} - Una promesa que se resuelve cuando se completa la operación.
+ */
   async addFavourite(){
     this.isFavLoading = true
     const id = this.firestoreService.idUsuarioLogueado
@@ -76,6 +87,11 @@ export class DetallesPage implements OnInit {
     
   }
 
+  /**
+ * Elimina la ciudad actual de la lista de favoritos del usuario.
+ * 
+ * @returns {Promise<void>} - Una promesa que se resuelve cuando se completa la operación.
+ */
   async deleteFavourite(){
     this.isFavLoading = true
     const id = this.firestoreService.idUsuarioLogueado;
@@ -91,6 +107,11 @@ export class DetallesPage implements OnInit {
     
   }
 
+  /**
+ * Verifica si la ciudad actual está en la lista de favoritos del usuario.
+ * 
+ * @returns {Promise<void>} - Una promesa que se resuelve cuando se completa la verificación.
+ */
   async isFavourite(){
     const id = this.firestoreService.idUsuarioLogueado
     this.isFav= await this.firestoreService.isFavourite(id, this.idCiudad)

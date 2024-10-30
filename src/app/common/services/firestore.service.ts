@@ -26,6 +26,15 @@ export class FirestoreService {
     
   }
 
+  /**
+   * Obtiene el ID del usuario actualmente autenticado.
+   * Utiliza el método `onAuthStateChanged` de Firebase para verificar si un usuario
+   * ha iniciado sesión, y resuelve con su UID. Si no hay un usuario autenticado, la
+   * promesa se rechaza con un mensaje de error.
+   * 
+   * @returns {Promise<string>} - Promesa que resuelve con el UID del usuario autenticado o
+   *                              se rechaza si no hay usuario autenticado.
+   */
   async idUserActual(): Promise<string> {
     const auth = getAuth();
     return new Promise((resolve, reject) => {
@@ -40,6 +49,12 @@ export class FirestoreService {
     });
 }
 
+  /**
+   * Verifica el estado de autenticación del usuario y redirige según la ruta actual.
+   * Si el usuario está en la página de inicio de sesión o registro y ya está autenticado,
+   * lo redirige a la página principal. Si el usuario no está autenticado en otras rutas,
+   * lo redirige a la página de inicio de sesión.
+   */
   checkAuthState() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -60,13 +75,17 @@ export class FirestoreService {
   async showToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000, // Duración del mensaje en milisegundos
+      duration: 2000, 
       position: 'bottom' // Posición en la pantalla (puede ser 'top', 'middle' o 'bottom')
     });
     toast.present();
   }
 
-
+  /**
+   * Inicia sesión en la aplicación utilizando Google como proveedor de autenticación.
+   * Si el usuario no tiene un documento en Firestore, se crea uno con su UID y correo electrónico.
+   * Al finalizar, redirige al usuario a la página principal de la aplicación.
+   */
   async loginWithGoogle() {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
@@ -90,7 +109,7 @@ export class FirestoreService {
           favoritos: [] // Array vacío
         });
       } else {
-        console.log("El documento del usuario ya existe en Firestore");
+        console.log("");
       }
   
       // Navega a la página principal de la aplicación
@@ -102,6 +121,12 @@ export class FirestoreService {
     }
   }
 
+  /**
+   * Agrega una ciudad a la lista de favoritos del usuario en Firestore.
+   * 
+   * @param {string} userId - ID del usuario al que se le agregará la ciudad a favoritos.
+   * @param {{ nombreCiudad: string, idCiudad: string }} ciudad - Objeto que contiene el nombre y ID de la ciudad a agregar.
+   */
   async addFavourite(userId: string, ciudad: { nombreCiudad: string, idCiudad: string }) {
     const userDocRef = doc(this.firestore, `Usuarios/${userId}`);
     try {
@@ -114,6 +139,12 @@ export class FirestoreService {
     }
 }
 
+/**
+ * Elimina una ciudad de la lista de favoritos del usuario en Firestore.
+ * 
+ * @param {string} userId - ID del usuario del que se eliminará la ciudad de favoritos.
+ * @param {{ nombreCiudad: string, idCiudad: string }} ciudad - Objeto que contiene el nombre y ID de la ciudad a eliminar.
+ */
 async deleteFavourite(userId: string, ciudad: { nombreCiudad: string, idCiudad: string }) {
     const userDocRef = doc(this.firestore, `Usuarios/${userId}`);
     try {
@@ -126,6 +157,13 @@ async deleteFavourite(userId: string, ciudad: { nombreCiudad: string, idCiudad: 
     }
 }
 
+  /**
+   * Verifica si una ciudad está en la lista de favoritos del usuario.
+   * 
+   * @param {string} userId - ID del usuario para verificar sus favoritos.
+   * @param {string} idCiudad - ID de la ciudad que se desea verificar.
+   * @returns {Promise<boolean>} - Promesa que resuelve con true si la ciudad está en favoritos, de lo contrario false.
+   */
   async isFavourite(userId: string, idCiudad: string): Promise<boolean> {
     let user: User | null;
 
@@ -156,6 +194,12 @@ async deleteFavourite(userId: string, ciudad: { nombreCiudad: string, idCiudad: 
     }
   }
 
+  /**
+   * Obtiene la lista de ciudades favoritas de un usuario desde Firestore.
+   * 
+   * @param {string} userId - ID del usuario del que se quieren obtener los favoritos.
+   * @returns {Promise<Array>} - Promesa que resuelve con un array de objetos de favoritos o un array vacío si no hay favoritos.
+   */
   async getFavourites(userId: string){
     const userDocRef = doc(this.firestore, `Usuarios/${userId}`);
     try {
@@ -164,7 +208,7 @@ async deleteFavourite(userId: string, ciudad: { nombreCiudad: string, idCiudad: 
         const userData = userDoc.data();
         return userData['favoritos'] || []; // Devuelve el array de favoritos o uno vacío si no existe
       } else {
-        console.log("No se encontró el documento del usuario.");
+        
         return [];
       }
     } catch (error) {

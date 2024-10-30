@@ -22,12 +22,17 @@ export class SignOutComponent  implements OnInit {
 
   ngOnInit() {}
 
-  async signOutComponent(){
+  /**
+   * Cierra la sesión del usuario autenticado y navega a la página de inicio de sesión.
+   * 
+   * @returns {Promise<void>} - Una promesa que se resuelve cuando se completa el cierre de sesión.
+   */
+  async signOutComponent():Promise<void>{
     const auth = getAuth()
     await signOut(auth).then(() =>{
-      console.log("Sesión cerrada")
+      
       this.navCtrl.navigateForward('/login');
-    }).catch(err => console.log(err))
+    }).catch(err => console.log(""))
   }
 
 }

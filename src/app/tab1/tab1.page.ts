@@ -50,6 +50,12 @@ export class Tab1Page {
     }
   }
 
+  /**
+   * Navega a la página de detalles del clima de la ciudad actual.
+   * 
+   * Esta función construye una URL utilizando el ID de la ciudad almacenado en el servicio de clima
+   * y redirige al usuario a la página de detalles correspondiente.
+   */
   verDetalle(){
     const URL = "/detalles/"+this.climaService.idCiudad
     this.roter.navigateByUrl(URL)
