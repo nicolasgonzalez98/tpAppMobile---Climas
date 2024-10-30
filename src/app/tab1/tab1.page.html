@@ -3,6 +3,8 @@
     <ion-title>
       Clima ahora
     </ion-title>
+
+    <app-sign-out class="ion-margin" slot="end"/>
   </ion-toolbar>
 </ion-header>
 
@@ -18,7 +20,7 @@
   </div>
 
   <ion-content *ngIf="!isloading">
-    <app-sign-out></app-sign-out>
+    
 
     <ion-card class="ion-padding ion-margin" (click)="verDetalle()">
       <ion-card-header>
