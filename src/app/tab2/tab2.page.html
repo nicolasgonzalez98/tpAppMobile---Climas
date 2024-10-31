@@ -1,17 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Mis favoritos
     </ion-title>
+
+    <app-sign-out class="ion-margin" slot="end"/>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="loader-container" *ngIf="isLoading">
+    <app-loader-spinner></app-loader-spinner>
+  </div>
+  
+  <ion-content  *ngIf="favorites.length > 0 && !isLoading; else noFavorites">
+    <ion-list>
+      <ion-item *ngFor="let fav of favorites" (click)="irADetalle(fav.idCiudad)">
+        <ion-label>
+          <h2>{{ fav.nombreCiudad }}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  
+  <ng-template #noFavorites >
+    <ion-item *ngIf="!isLoading">
+      <ion-label>No tienes ciudades en favoritos.</ion-label>
+    </ion-item>
+  </ng-template>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+   
 </ion-content>

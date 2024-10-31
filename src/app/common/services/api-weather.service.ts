@@ -8,21 +8,27 @@ import { Geolocation } from '@capacitor/geolocation';
 })
 export class APIWeatherService {
 
-  private API_KEY2 = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
-  private API_KEY = "GQif49vSHkbMUUxNljajigCkmM3bujYd"
+  private API_KEY = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
+  private API_KEY2 = "11h0AUOD4z9LBuz6r6A1upwiPIeqkUNF"
 
   public datosCiudad={"LocalizedName":""};
   public nombrePais = {"nombrePais":""};
   public areaAdministrativa = {"areaAdministrativa": ""}
   public coordenadas = {"latitude":0, "longitude":0}
   public idCiudad:string=""
-  public climaActualEnCiudad = {isDayTime:"",temperatura:{}, descripcion:""}
-  public proximasDoceHoras: any[] = []
-  public proximosCincoDias: any[] = []
+  public climaActualEnCiudad  = {isDayTime:"",temperatura:{}, descripcion:""}
+  public proximasDoceHoras: any[]  = []
+  public proximosCincoDias: any[]  = []
   constructor() { }
 
-  //Coordenandas
-  public currentPosition = async () => {
+    /**
+     * Obtiene la posición geográfica actual del usuario.
+     * Utiliza el API de Geolocation para capturar las coordenadas de latitud y longitud
+     * y las asigna al objeto `coordenadas`.
+     *
+     * @returns {Promise<void>} Promesa que se resuelve cuando la posición actual ha sido obtenida.
+    */
+  public currentPosition = async (): Promise<void> => {
     await Geolocation.getCurrentPosition()
     .then(res => {
       this.coordenadas.latitude = res.coords.latitude
@@ -31,12 +37,21 @@ export class APIWeatherService {
     
   };
 
+    /**
+     * Asigna íconos de clima correspondientes a cada condición de clima en el array proporcionado.
+     * Utiliza un mapeo de frases descriptivas de condiciones climáticas en español a íconos de Ionic.
+     * 
+     * @param {any[]} climaArray - Array de objetos de clima, que puede incluir diferentes propiedades
+     *        según el tipo de array (array de 12 horas o array de 5 días).
+     * 
+     * @returns {any[]} - Array de objetos de clima con íconos adicionales añadidos según la condición climática.
+     */
   asignarIconoClima(climaArray: any[]): any[] {
     // Mapa de frases del clima en español a íconos de Ionic
     const iconMap: { [key: string]: string } = {
       'Despejado': 'sunny',             // Despejado (día)
       'Mayormente despejado': 'partly-sunny',
-      'Parcialmente nublado': 'partly-cloudy',
+      'Parcialmente nublado': 'cloudy',
       'Nublado': 'cloudy',              // Nublado
       'Lluvia': 'rainy',                // Lluvia
       'Tormentas': 'thunderstorm',      // Tormentas
@@ -47,7 +62,9 @@ export class APIWeatherService {
       "Nubes y claros": "cloudy",
       "Mayormente nublado":"cloudy",
       "Tormentas eléctricas":"thunderstorm",
-      "Soleado":"sunny"
+      "Soleado":"sunny",
+      "Mayormente soleado":"sunny",
+      "Parcialmente soleado":"sunny"
     };
 
     return climaArray.map(clima => {
@@ -64,7 +81,7 @@ export class APIWeatherService {
   
         return {
           ...clima,
-          iconoClima: icono  // Nueva propiedad con el ícono correspondiente
+          iconoClima: icono
         };
   
       // Para el array de cinco días (con Day y Night)
@@ -81,8 +98,8 @@ export class APIWeatherService {
   
         return {
           ...clima,
-          iconoDia: iconoDia,      // Icono para el clima durante el día
-          iconoNoche: iconoNoche   // Icono para el clima durante la noche
+          iconoDia: iconoDia,      
+          iconoNoche: iconoNoche   
         };
       }
   
@@ -91,52 +108,102 @@ export class APIWeatherService {
     });
   }
 
-  //Busquedas clima
+  /**
+ * Realiza una búsqueda de ciudad usando el servicio de AccuWeather y asigna los datos
+ * obtenidos a las propiedades correspondientes. Utiliza la API para recuperar información
+ * sobre una ciudad específica y obtener su ID.
+ * 
+ * @param {string} query - El nombre de la ciudad o consulta de búsqueda.
+ * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la búsqueda.
+ */
   async buscarPorCiudad(query:string){
-    
     await axios.get("http://dataservice.accuweather.com/locations/v1/"+query+"?apikey="+this.API_KEY+"&language=es-ES")
     .then((res) => {
-      console.log(res.data)
       this.datosCiudad= res.data
       this.nombrePais = res.data.Country.LocalizedName
       this.areaAdministrativa = res.data.AdministrativeArea.LocalizedName
       this.idCiudad = res.data.Key
     })
-
-    
   }
 
-  async busquedaPorGeolocalizacion(){
+    /**
+     * Realiza una búsqueda de ciudad basada en la posición geográfica actual del usuario.
+     * Obtiene las coordenadas mediante `currentPosition` y consulta el servicio de AccuWeather
+     * para obtener la información de la ciudad correspondiente a dicha ubicación.
+     * 
+     * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la búsqueda de ciudad.
+     */
+  async busquedaPorGeolocalizacion(): Promise<void>{
      await this.currentPosition()
 
      await axios.get("http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey="+this.API_KEY	+
       "&q="+this.coordenadas.latitude+","+this.coordenadas.longitude+"&language=es-ES")
       .then(res =>{
         this.idCiudad = res.data.Key
-        this.datosCiudad= res.data
+        this.datosCiudad= res.data 
         
       })
       
   }
-
+  
+    /**
+     * Obtiene las condiciones climáticas actuales de una ciudad específica mediante su ID.
+     * Realiza una solicitud a la API de AccuWeather para obtener detalles como si es de día,
+     * la descripción del clima y la temperatura actual.
+     * 
+     * @param {string} idCiudad - ID de la ciudad para obtener sus condiciones climáticas.
+     * @returns {Promise<void>} - Promesa que se resuelve cuando se completan los datos del clima actual.
+     */
   async climaEnCiudad(idCiudad : string){
-    await axios.get("http://dataservice.accuweather.com/currentconditions/v1/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES")
-    .then(res => {
+    try {
+      const response = await axios.get(
+        "http://dataservice.accuweather.com/currentconditions/v1/" + idCiudad + "?apikey=" + this.API_KEY + "&language=es-ES"
+      );
+  
+      // Verificar si hay datos en la respuesta
+      if (response.data && response.data.length > 0) {
+        this.climaActualEnCiudad.isDayTime = response.data[0].IsDayTime;
+        this.climaActualEnCiudad.descripcion = response.data[0].WeatherText;
+        this.climaActualEnCiudad.temperatura = response.data[0].Temperature.Metric.Value;
+      } else {
+        throw new Error("Ciudad no encontrada");
+      }
+    } catch (error) {
+      this.climaActualEnCiudad = { isDayTime: "", temperatura: {}, descripcion: "" }; // Restablecer datos
+      throw new Error("Error al obtener el clima: "+error);
+    }
+  }
+
+/**
+ * Obtiene el pronóstico del clima para las próximas 12 horas en una ciudad específica.
+ * Realiza una solicitud a la API de AccuWeather usando el ID de la ciudad y asigna íconos
+ * de clima a cada hora según las condiciones climáticas.
+ * 
+ * @param {string} idCiudad - ID de la ciudad para obtener su pronóstico climático.
+ * @returns {Promise<any[]>} - Promesa que resuelve con un array de objetos de clima para las próximas 12 horas.
+ */
+  async climaProximasDoceHoras(idCiudad : string ):Promise<any[]>{
+    try {
+      const response = await axios.get("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
+      this.proximasDoceHoras = response.data
+      this.proximasDoceHoras = this.asignarIconoClima(this.proximasDoceHoras)
       
-      this.climaActualEnCiudad.isDayTime = res.data[0].IsDayTime
-      this.climaActualEnCiudad.descripcion = res.data[0].WeatherText
-      this.climaActualEnCiudad.temperatura = res.data[0].Temperature.Metric.Value
-    })
+      return this.proximasDoceHoras
+    } catch (error) {
+      this.proximasDoceHoras = []
+      return []
+    }
   }
 
-  async climaProximasDoceHoras(idCiudad : string ): Promise<any[]>{
-    const response = await axios.get("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
-    this.proximasDoceHoras = response.data
-    this.proximasDoceHoras = this.asignarIconoClima(this.proximasDoceHoras)
-    
-    return this.proximasDoceHoras
-  }
-
+    /**
+     * Obtiene el pronóstico del clima para los próximos cinco días en una ciudad específica.
+     * Realiza una solicitud a la API de AccuWeather utilizando el ID de la ciudad y asigna íconos
+     * de clima a cada día según las condiciones climáticas.
+     * 
+     * @param {string} idCiudad - ID de la ciudad para obtener su pronóstico climático.
+     * @returns {Promise<any[]>} - Promesa que resuelve con un array de objetos de clima para los próximos cinco días.
+     *                             Devuelve un array vacío si ocurre un error en la solicitud.
+     */
   async climaProximosCincoDias(idCiudad:string): Promise<any[]>{
     try {
       const response = await axios.get("http://dataservice.accuweather.com/forecasts/v1/daily/5day/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
@@ -178,8 +245,5 @@ export class APIWeatherService {
     }
   }
   
-
-  
-
 
 }

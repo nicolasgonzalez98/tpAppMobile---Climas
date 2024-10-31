@@ -39,14 +39,6 @@ export class LoginPage implements OnInit {
     
   }
 
-  loadUsers(){
-    this.firestoreService.getCollectionChanges<User>("/Usuarios").subscribe(data => {
-      if(data){
-        this.users = data
-      }
-    })
-  }
-
   async login() {
     const { email, password } = this.loginForm.value;
     
