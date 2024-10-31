@@ -142,7 +142,12 @@ export class DetallesPage implements OnInit {
    * @description permitira volver a la ultima pagina visitada del historial
    */
   vueltaAtras(){
-      this.navCtrl.pop();
+    const ultimaTab = localStorage.getItem('ultimaTab');
+    if (ultimaTab) {
+      this.navCtrl.navigateBack(ultimaTab);
+    } else {
+      this.navCtrl.navigateBack('/tabs/tab1'); // Ruta por defecto si no hay una pestaña guardada
+    }
   }
 
 }

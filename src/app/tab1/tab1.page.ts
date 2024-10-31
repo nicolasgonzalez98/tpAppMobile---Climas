@@ -57,6 +57,7 @@ export class Tab1Page {
    * y redirige al usuario a la página de detalles correspondiente.
    */
   verDetalle(){
+    localStorage.setItem('ultimaTab', '/tabs/tab1'); //Guarda ultima tab visitada para que en detalles pueda volver aqui.
     const URL = "/detalles/"+this.climaService.idCiudad
     this.roter.navigateByUrl(URL)
   }

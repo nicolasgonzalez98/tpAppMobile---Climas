@@ -44,6 +44,7 @@ export class Tab3Page {
    * @description Redirecciona a una pagina de detalles donde se podra visualizar el clima actual,proximo por 12 horas y 5 dias
    */
   public verDetalle(idCiudad:string){
+    localStorage.setItem('ultimaTab', '/tabs/tab3'); //Guarda ultima tab visitada para que en detalles pueda volver aqui.
     const URL = "/detalles/"+idCiudad
     this.roter.navigateByUrl(URL)
   }
