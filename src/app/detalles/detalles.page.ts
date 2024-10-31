@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { APIWeatherService } from '../common/services/api-weather.service';
 import { addIcons } from 'ionicons';
 import { logoIonic } from 'ionicons/icons';
+import { NavController } from '@ionic/angular';
 import { UtilitiesService } from '../common/services/utilities.service';
 import { FirestoreService } from '../common/services/firestore.service';
 
@@ -28,6 +29,7 @@ export class DetallesPage implements OnInit {
   constructor(
     public datosClima:APIWeatherService,
     private route:ActivatedRoute,
+    private navCtrl: NavController,
     public utilities: UtilitiesService,
     private firestoreService:FirestoreService
   ) { 
@@ -116,4 +118,26 @@ export class DetallesPage implements OnInit {
     const id = this.firestoreService.idUsuarioLogueado
     this.isFav= await this.firestoreService.isFavourite(id, this.idCiudad)
   }
+
+  extraerHora(fechaOriginal: string) {
+    const fecha = new Date(fechaOriginal);
+  
+    // Obtener la hora y los minutos
+    const horas = fecha.getHours().toString().padStart(2, '0');
+    const minutos = fecha.getMinutes().toString().padStart(2, '0');
+  
+    // Formatear la hora a "hh:mm"
+    const horaFormateada = `${horas}:${minutos}`;
+  
+    return horaFormateada;
+  }
+
+  /**
+   * @function vueltaAtras()
+   * @description permitira volver a la ultima pagina visitada del historial
+   */
+  vueltaAtras(){
+      this.navCtrl.pop();
+  }
+
 }

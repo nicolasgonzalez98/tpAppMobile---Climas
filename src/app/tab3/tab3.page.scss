@@ -1,0 +1,26 @@
+.contenedor-ciudades {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas de igual tamaño */
+    gap: 10px; /* Espacio entre los elementos */
+    padding: 10px; /* Espaciado del contenedor */
+  }
+  
+  ion-card {
+    width: 100%; /* Para que cada tarjeta llene el ancho de la columna */
+  }
+  
+  .card-ciudades{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column; 
+  }
+  
+  .msg-recordatorio-titulo{
+    margin: 0;
+  }
+
+  ion-input{
+    margin-top: 10px;
+  }
