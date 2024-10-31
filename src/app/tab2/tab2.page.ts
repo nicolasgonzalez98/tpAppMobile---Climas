@@ -11,7 +11,7 @@ export class Tab2Page {
   favorites: any[] = [];
   isLoading: boolean = false
   constructor(
-    private firestoreService: FirestoreService,
+    public firestoreService: FirestoreService,
     private router: Router
   ) {}
 
@@ -19,8 +19,8 @@ export class Tab2Page {
     this.isLoading = true
     await this.firestoreService.idUserActual()
     const userId = this.firestoreService.idUsuarioLogueado;
-    this.favorites = await this.firestoreService.getFavourites(userId);
-
+    await this.firestoreService.getFavourites(userId);
+    
     
     this.isLoading = false
   }

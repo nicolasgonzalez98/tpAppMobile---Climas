@@ -31,7 +31,7 @@ export class DetallesPage implements OnInit {
     private route:ActivatedRoute,
     private navCtrl: NavController,
     public utilities: UtilitiesService,
-    private firestoreService:FirestoreService
+    private firestoreService:FirestoreService,
   ) { 
     addIcons({ logoIonic })
   } 
@@ -86,6 +86,8 @@ export class DetallesPage implements OnInit {
   }).then(() => {
       this.isFavLoading = false;
   });
+
+  await this.firestoreService.getFavourites(id);
     
   }
 
@@ -104,7 +106,10 @@ export class DetallesPage implements OnInit {
       this.isFavourite()
     }).then(() => {
       this.isFavLoading = false
+      
     })
+
+    await this.firestoreService.getFavourites(id);
     
     
   }

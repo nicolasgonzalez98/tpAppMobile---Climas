@@ -13,9 +13,9 @@
     <app-loader-spinner></app-loader-spinner>
   </div>
   
-  <ion-content  *ngIf="favorites.length > 0 && !isLoading; else noFavorites">
+  <ion-content  *ngIf="firestoreService.favourites.length > 0 && !isLoading; else noFavorites">
     <ion-list>
-      <ion-item *ngFor="let fav of favorites" (click)="irADetalle(fav.idCiudad)">
+      <ion-item *ngFor="let fav of firestoreService.favourites" (click)="irADetalle(fav.idCiudad)">
         <ion-label>
           <h2>{{ fav.nombreCiudad }}</h2>
         </ion-label>

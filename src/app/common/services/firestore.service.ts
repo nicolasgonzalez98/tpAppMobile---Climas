@@ -15,6 +15,7 @@ export class FirestoreService {
 
   firestore: Firestore = inject(Firestore)
   idUsuarioLogueado:string = ""
+  favourites: { idCiudad: string; nombreCiudad: string }[] = [];
   
   constructor(
     private navCtrl: NavController,
@@ -206,13 +207,15 @@ async deleteFavourite(userId: string, ciudad: { nombreCiudad: string, idCiudad: 
       const userDoc = await getDoc(userDocRef);
       if (userDoc.exists()) {
         const userData = userDoc.data();
+        this.favourites = userData['favoritos'] || []
         return userData['favoritos'] || []; // Devuelve el array de favoritos o uno vacío si no existe
       } else {
-        
+        this.favourites = []
         return [];
       }
     } catch (error) {
       console.error("Error al obtener favoritos: ", error);
+      this.favourites = []
       return [];
     }
     }
