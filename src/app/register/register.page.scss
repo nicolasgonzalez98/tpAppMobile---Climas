@@ -1,4 +1,11 @@
-.fondo-login{
+.header {
+    position: absolute;
+    top: 10px; /* Ajusta según lo necesario */
+    left: 10px; /* Ajusta según lo necesario */
+    z-index: 10; /* Asegura que el botón esté encima del fondo */
+}
+
+.fondo-login {
     background-image: url("/assets/img/fondo.png");
     background-size: cover;
     background-position: center;
@@ -6,26 +13,45 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    padding-top: 60px; /* Añade espacio superior para el botón */
 }
-
-
 
 .fondo-login::before {
-content: "";
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-image: url("/assets/img/fondo.png");
-background-size: cover;
-background-position: center;
-z-index: -1;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/assets/img/fondo.png");
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
 }
 
-.texto-login{
+.texto-login {
     text-align: center;
     font-size: 14px;
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0px;
     color: grey;
-  }
+}
+
+ion-input {
+    border-left: 1px solid #007bff;
+    border-right: 1px solid #007bff;
+    border-bottom: 1px solid #007bff;
+    border-top: none;
+    border-radius: 0;
+    transition: border-color 0.3s ease;
+    height: 40px;
+    font-size: 14px;
+    padding: 10px;
+}
+
+ion-item {
+    margin-bottom: 15px;
+}
+
+ion-label {
+    padding: 0 10px;
+}
