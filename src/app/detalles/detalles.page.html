@@ -1,6 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>{{ this.datosClima.datosCiudad.LocalizedName }}</ion-title>
+    <ion-grid>
+      <ion-row>
+        <!-- Columna para el botón -->
+        <ion-col size="auto">
+          <ion-button class="boton-titulo-general"  (click)="vueltaAtras()">
+            <ion-icon lot="icon-only"s name="arrow-back"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+        <!-- Columna para el título y subtítulo -->
+        <ion-col>
+          <ion-title class="titulo-general">{{ datosClima.datosCiudad.LocalizedName }}</ion-title>
+          <p>{{ datosClima.nombrePais }} - {{ datosClima.areaAdministrativa }}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 

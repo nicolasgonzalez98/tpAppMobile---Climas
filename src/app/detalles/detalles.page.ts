@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { APIWeatherService } from '../common/services/api-weather.service';
 import { addIcons } from 'ionicons';
 import { logoIonic } from 'ionicons/icons';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -21,7 +22,8 @@ export class DetallesPage implements OnInit {
   
   constructor(
     public datosClima:APIWeatherService,
-    private route:ActivatedRoute
+    private route:ActivatedRoute,
+    private navCtrl: NavController
   ) { 
     addIcons({ logoIonic })
   } 
@@ -68,6 +70,14 @@ export class DetallesPage implements OnInit {
     const horaFormateada = `${horas}:${minutos}`;
   
     return horaFormateada;
+  }
+
+  /**
+   * @function vueltaAtras()
+   * @description permitira volver a la ultima pagina visitada del historial
+   */
+  vueltaAtras(){
+      this.navCtrl.pop();
   }
 
 }

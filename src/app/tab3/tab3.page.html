@@ -1,17 +1,65 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Buscador de ciudades
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="fondo-login">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title style="text-align: center;">
+          <b>Ingresar ciudad</b>
+        </ion-card-title>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+        <ion-label position="floating">Ciudad</ion-label>
+        <ion-input
+          type="text"
+          placeholder="Escribe una ciudad..."
+          [(ngModel)]="nombreCiudad"
+          (ionChange)="guardarUltimaCiudadLS()"
+        ></ion-input>
+
+        <ion-button
+          class="ion-padding"
+          color="primary"
+          (click)="buscarCiudad(nombreCiudad)"
+          expand="full"
+        >
+          Buscar
+        </ion-button>
+        <hr>
+        <h4 class="msg-recordatorio-titulo">Recordatorio:</h4>
+        <p>Puede existir más de una misma demarcacion administrativa en el mismo país</p>
+      </ion-card-header>
+    </ion-card>
+  </div>
+
+  <div class="contenedor-ciudades ">
+    <ion-item *ngFor="let ciudad of ciudades" lines="none">
+      <ion-card (click)="verDetalle(ciudad.key)" color="dark" class="card-ciudades">
+        <ion-card-header>
+          <ion-card-title>{{ ciudad.pais }}</ion-card-title>
+          <ion-card-subtitle>{{ ciudad.nombreCiudad }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          {{ ciudad.demarcacionAdministrativa }}
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </div>
+
+  <ion-item *ngIf="fueBuscado && ciudades.length === 0" lines="none">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>No hay ciudades disponibles</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Actualmente no hay ciudades con ese nombre. Por favor ingrese el
+        nombre completo de una.
+      </ion-card-content>
+    </ion-card>
+  </ion-item>
 </ion-content>

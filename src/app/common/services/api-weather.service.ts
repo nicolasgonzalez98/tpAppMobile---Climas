@@ -9,9 +9,11 @@ import { Geolocation } from '@capacitor/geolocation';
 export class APIWeatherService {
 
   private API_KEY2 = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
-  private API_KEY = "11h0AUOD4z9LBuz6r6A1upwiPIeqkUNF"
+  private API_KEY = "GQif49vSHkbMUUxNljajigCkmM3bujYd"
 
   public datosCiudad={"LocalizedName":""};
+  public nombrePais = {"nombrePais":""};
+  public areaAdministrativa = {"areaAdministrativa": ""}
   public coordenadas = {"latitude":0, "longitude":0}
   public idCiudad:string=""
   public climaActualEnCiudad = {isDayTime:"",temperatura:{}, descripcion:""}
@@ -92,10 +94,12 @@ export class APIWeatherService {
   //Busquedas clima
   async buscarPorCiudad(query:string){
     
-    await axios.get("http://dataservice.accuweather.com/locations/v1/"+query+"?apikey="+this.API_KEY)
+    await axios.get("http://dataservice.accuweather.com/locations/v1/"+query+"?apikey="+this.API_KEY+"&language=es-ES")
     .then((res) => {
       console.log(res.data)
       this.datosCiudad= res.data
+      this.nombrePais = res.data.Country.LocalizedName
+      this.areaAdministrativa = res.data.AdministrativeArea.LocalizedName
       this.idCiudad = res.data.Key
     })
 
@@ -147,7 +151,33 @@ export class APIWeatherService {
     }
   }
 
-
+  /**
+   * @description Traera una lista de ciudades para capturar 4 valores a usar, key, pais, demarcacion y nombre de la ciudad.
+   *              Con estos valores el usuario podra seleccionar una y se hara su respectiva busqueda de datos de esa ciudad.
+   * @param nombreCiudad 
+   * @returns 
+   */
+  async buscarCiudad(nombreCiudad: string): Promise<any[]> {
+    try {
+      const response = await axios.get(
+        `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${this.API_KEY}&q=${nombreCiudad}&language=es-Es`
+      );
+  
+      // Mapea los datos para obtener solo los campos necesarios
+      const ciudades = response.data.map((ciudad: any) => ({
+        key: ciudad.Key,
+        pais: ciudad.Country.LocalizedName,
+        demarcacionAdministrativa: ciudad.AdministrativeArea.LocalizedName,
+        nombreCiudad: ciudad.LocalizedName
+      }));
+      // Retorna solo el array de objetos
+      return ciudades;
+    } catch (error) {
+      console.error('Error al buscar ciudades:', error);
+      return [];
+    }
+  }
+  
 
   
 

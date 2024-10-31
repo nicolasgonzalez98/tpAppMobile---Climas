@@ -11,6 +11,7 @@ import { AngularFireAuth } from "@angular/fire/compat/auth";
 export class RegisterPage implements OnInit {
 
   user : User = {} as User;
+  confirmarContrasena: string = '';
 
   constructor(
     private toastCtrl: ToastController,
@@ -22,50 +23,89 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
   }
 
-  async register(user:User){
-    console.log("Inicio")
-    if (this.formValidation()){
-      let loader = await this.loadingCtrl.create({
-        message : "Espere por favor..."
-      })
-      await loader.present();
+/**
+ * @description encargado de hacer el registro de usuario detro del auth en firebase mediante su funcion navita createUserWithEmailAndPassword()
+ * @param user 
+ */
+async register(user: User) {
+  if (this.formValidation()) {
+    let loader = await this.loadingCtrl.create({
+      message: "Espere por favor..."
+    });
+    await loader.present();
 
-      try{
-        console.log("entro try")
-        await this.afAuth.createUserWithEmailAndPassword(user.email, user.password).then(data => { 
-          console.log(data),
-
-          this.navCtrl.navigateForward('/login');
-        })
-      } catch (e : any) {
-        let errorMessage = e.message || e.getLocalizedMessage()
-
-        this.showToast(errorMessage)
+    try {
+      await this.afAuth.createUserWithEmailAndPassword(user.email, user.password).then(data => {
+        console.log(data);
+        this.navCtrl.navigateForward('/login');
+      });
+    } catch (e: any) {
+      // Detecta si el error es debido a un email ya registrado
+      if (e.code === 'auth/email-already-in-use') {
+        this.showToast("El email ingresado ya existe");
+      } else {
+        this.showToast(e.message || "Ha ocurrido un error");
       }
+    }
 
-      await loader.dismiss();
-    } 
+    await loader.dismiss();
+  }
+}
+
+/**
+ * @function formValidation()
+ * @description Encargado de validar el formulario
+ */
+formValidation() {
+  if (!this.user.email) {
+    this.showToast("Ingrese un email");
+    return false;
   }
 
-
-
-  formValidation(){
-    if(!this.user.email){
-      this.showToast("Ingrese un email");
-      return false;
-    }
-    if(!this.user.password){
-      this.showToast("Ingrese un clave");
-      return false;
-    }
-    console.log("Salgo del formValidation")
-    return true;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(this.user.email)) {
+    this.showToast("Ingrese un email válido");
+    return false;
   }
 
+  // Validación de contraseña segura: debe tener al menos una mayúscula, una minúscula, un carácter especial y más de 8 caracteres
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/;
+
+  if (!this.user.password) {
+    this.showToast("Ingrese una clave");
+    return false;
+  } else if (!passwordRegex.test(this.user.password)) {
+    this.showToast("La clave debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y un carácter especial");
+    return false;
+  }
+
+  // Validación de coincidencia de contraseñas
+  if (this.user.password !== this.confirmarContrasena) {
+    this.showToast("Las contraseñas no coinciden");
+    return false;
+  }
+
+  return true;
+}
+  
+/**
+ * @function showToast()
+ * @description Encargado de mostrar mensaje error
+ */
   showToast(message: string){
     this.toastCtrl.create({
       message: message,
       duration: 3000,
     }).then (toastData => toastData.present())
   }
+
+
+    /**
+   * @function vueltaAtras()
+   * @description permitira volver a la ultima pagina visitada del historial
+   */
+    vueltaAtras(){
+      this.navCtrl.navigateBack('/login')
+  }
+
 }
