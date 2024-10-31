@@ -11,8 +11,12 @@
 
         <!-- Columna para el título y subtítulo -->
         <ion-col>
-          <ion-title class="titulo-general">{{ datosClima.datosCiudad.LocalizedName }}</ion-title>
-          <p>{{ datosClima.nombrePais }} - {{ datosClima.areaAdministrativa }}</p>
+          <ion-title class="titulo-general">
+            {{ (datosClima?.datosCiudad?.LocalizedName && datosClima?.nombrePais && datosClima?.areaAdministrativa) ? datosClima.datosCiudad.LocalizedName : 'ERROR' }}
+          </ion-title>
+          <p *ngIf="datosClima?.datosCiudad?.LocalizedName && datosClima?.nombrePais && datosClima?.areaAdministrativa">
+            {{ datosClima.nombrePais }} - {{ datosClima.areaAdministrativa }}
+          </p>
         </ion-col>
       </ion-row>
     </ion-grid>
