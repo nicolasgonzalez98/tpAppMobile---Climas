@@ -8,8 +8,8 @@ import { Geolocation } from '@capacitor/geolocation';
 })
 export class APIWeatherService {
 
-  private API_KEY2 = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
-  private API_KEY = "11h0AUOD4z9LBuz6r6A1upwiPIeqkUNF"
+  private API_KEY = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
+  private API_KEY2 = "11h0AUOD4z9LBuz6r6A1upwiPIeqkUNF"
 
   public datosCiudad={"LocalizedName":""};
   public coordenadas = {"latitude":0, "longitude":0}
