@@ -20,8 +20,7 @@
       <ion-icon size="large" *ngIf="!this.isFav && !this.isFavLoading" (click)="addFavourite()" name="star-outline"></ion-icon>
       <ion-icon size="large" *ngIf="this.isFav && !this.isFavLoading" (click)="deleteFavourite()" name="star"></ion-icon>
       <ion-spinner *ngIf="this.isFavLoading" name="crescent"></ion-spinner>
-      <!-- <ion-icon size="large" *ngIf="this.isFavLoading" name="ellipsis-horizontal"></ion-icon> -->
-    </div>
+      </div>
   </ion-toolbar>
   
 </ion-header>
