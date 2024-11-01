@@ -60,8 +60,9 @@ export class Tab3Page {
   }
 
 
-
-    // Método que se llama cuando se abandona la pestaña
+    /**
+   * @description  Método que se llama cuando se abandona la pestaña
+   */
     ionViewWillLeave() {
       // Restablecer los datos
       this.ciudades = []; // Restablecer la lista de ciudades

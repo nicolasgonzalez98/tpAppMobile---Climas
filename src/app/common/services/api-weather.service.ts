@@ -8,8 +8,7 @@ import { Geolocation } from '@capacitor/geolocation';
 })
 export class APIWeatherService {
 
-  private API_KEY2 = "cz9Z7mdDo3VOYRWM3zN4FGf3u78THgAC"
-  private API_KEY = "AqiAWmSuu5jvuwh2FAiGwdcNMRdeQ8I5"
+  private API_KEY = "lRWDOZ7yGU55w4mKeaFCrBxEGFkkjy4E"
 
   public datosCiudad={"LocalizedName":""};
   public nombrePais = {"nombrePais":""};
@@ -117,7 +116,7 @@ export class APIWeatherService {
  * @returns {Promise<void>} - Promesa que se resuelve cuando se completa la búsqueda.
  */
   async buscarPorCiudad(query:string){
-    await axios.get("http://dataservice.accuweather.com/locations/v1/"+query+"?apikey="+this.API_KEY+"&language=es-ES")
+    await axios.get("https://dataservice.accuweather.com/locations/v1/"+query+"?apikey="+this.API_KEY+"&language=es-ES")
     .then((res) => {
       this.datosCiudad= res.data
       this.nombrePais = res.data.Country.LocalizedName
@@ -136,7 +135,7 @@ export class APIWeatherService {
   async busquedaPorGeolocalizacion(): Promise<void>{
      await this.currentPosition()
 
-     await axios.get("http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey="+this.API_KEY	+
+     await axios.get("https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey="+this.API_KEY	+
       "&q="+this.coordenadas.latitude+","+this.coordenadas.longitude+"&language=es-ES")
       .then(res =>{
         this.idCiudad = res.data.Key
@@ -157,7 +156,7 @@ export class APIWeatherService {
   async climaEnCiudad(idCiudad : string){
     try {
       const response = await axios.get(
-        "http://dataservice.accuweather.com/currentconditions/v1/" + idCiudad + "?apikey=" + this.API_KEY + "&language=es-ES"
+        "https://dataservice.accuweather.com/currentconditions/v1/" + idCiudad + "?apikey=" + this.API_KEY + "&language=es-ES"
       );
   
       // Verificar si hay datos en la respuesta
@@ -184,7 +183,7 @@ export class APIWeatherService {
  */
   async climaProximasDoceHoras(idCiudad : string ):Promise<any[]>{
     try {
-      const response = await axios.get("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
+      const response = await axios.get("https://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
       this.proximasDoceHoras = response.data
       this.proximasDoceHoras = this.asignarIconoClima(this.proximasDoceHoras)
       
@@ -206,7 +205,7 @@ export class APIWeatherService {
      */
   async climaProximosCincoDias(idCiudad:string): Promise<any[]>{
     try {
-      const response = await axios.get("http://dataservice.accuweather.com/forecasts/v1/daily/5day/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
+      const response = await axios.get("https://dataservice.accuweather.com/forecasts/v1/daily/5day/"+idCiudad+"?apikey="+this.API_KEY+"&language=es-ES&metric=true")
     
       this.proximosCincoDias = response.data.DailyForecasts
       this.proximosCincoDias = this.asignarIconoClima(this.proximosCincoDias)
@@ -227,7 +226,7 @@ export class APIWeatherService {
   async buscarCiudad(nombreCiudad: string): Promise<any[]> {
     try {
       const response = await axios.get(
-        `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${this.API_KEY}&q=${nombreCiudad}&language=es-Es`
+        `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${this.API_KEY}&q=${nombreCiudad}&language=es-Es`
       );
   
       // Mapea los datos para obtener solo los campos necesarios
